@@ -1,44 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <title>Manage Faculty</title>
-    <link rel="stylesheet" href="../css/style.css">
-</head>
-<body>
-    <header><h1>Manage Faculty</h1></header>
-    <nav>
-        <ul>
-            <li><a href="../index.html">Dashboard</a></li>
-            <li><a href="events.html">Events</a></li>
-            <li><a href="students.html">Students</a></li>
-            <li><a href="sponsors.html">Sponsors</a></li>
-            <li><a href="feedback.html">Feedback</a></li>
-        </ul>
-    </nav>
-    <main>
-        <h2>Faculty Coordinators</h2>
-        <ul id="faculty-list">
-            <li>Dr. Sharma - Tech Fest <button onclick="removeFaculty(this)">Remove</button></li>
-            <li>Prof. Verma - Hackathon <button onclick="removeFaculty(this)">Remove</button></li>
-        </ul>
-        <input type="text" id="newFaculty" placeholder="Enter Faculty Name">
-        <button onclick="addFaculty()">Assign Faculty</button>
-    </main>
-    <script>
-        function addFaculty() {
-            let facultyInput = document.getElementById("newFaculty").value;
-            if (facultyInput) {
-                let li = document.createElement("li");
-                li.innerHTML = facultyInput + ' <button onclick="removeFaculty(this)">Remove</button>';
-                document.getElementById("faculty-list").appendChild(li);
-                document.getElementById("newFaculty").value = "";
-            } else {
-                alert("Please enter faculty name.");
-            }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Coordination</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
-        function removeFaculty(button) {
+
+        body {
+            background: #121212;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: #2d2d2d;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .title {
+            text-align: center;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .input-box {
+            margin-bottom: 15px;
+        }
+
+        .input-box span {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+            background: #3a3a3a;
+            color: #fff;
+        }
+
+        input:focus {
+            outline: 2px solid #71b7e6;
+        }
+
+        .coordinator-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .coordinator-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .coordinator-row input {
+            flex: 1;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background: #71b7e6;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #5a9ac6;
+        }
+
+        .faculty-list {
+            margin-top: 20px;
+        }
+
+        .faculty-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .faculty-list li {
+            background: #252525;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .delete-btn {
+            background: red;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="title">Faculty Coordination</div>
+        <form id="facultyForm">
+            <div class="input-box">
+                <span>Event Name</span>
+                <input type="text" id="eventName" placeholder="Enter event name" required>
+            </div>
+
+            <div class="input-box">
+                <span>Number of Coordinators</span>
+                <input type="number" id="numCoordinators" min="1" placeholder="Enter number" required>
+            </div>
+
+            <div id="coordinatorFields" class="coordinator-container"></div>
+
+            <button type="submit">Add Faculty</button>
+        </form>
+    </div>
+
+    <div class="container faculty-list">
+        <div class="title">Faculty List</div>
+        <ul id="facultyList"></ul>
+    </div>
+
+    <script>
+        document.getElementById("numCoordinators").addEventListener("input", function () {
+            const num = parseInt(this.value) || 0;
+            const container = document.getElementById("coordinatorFields");
+            container.innerHTML = "";
+
+            for (let i = 1; i <= num; i++) {
+                const div = document.createElement("div");
+                div.classList.add("coordinator-row");
+                div.innerHTML = `
+                    <input type="text" class="coordinatorName" placeholder="Coordinator ${i} Name" required>
+                    <input type="text" class="coordinatorPhone" placeholder="Phone No" required>
+                `;
+                container.appendChild(div);
+            }
+        });
+
+        document.getElementById("facultyForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const eventName = document.getElementById("eventName").value;
+            const coordinatorNames = [...document.querySelectorAll(".coordinatorName")].map(input => input.value);
+
+            if (!eventName || coordinatorNames.includes("")) {
+                alert("Please fill all fields");
+                return;
+            }
+
+            const facultyList = document.getElementById("facultyList");
+            const li = document.createElement("li");
+            li.innerHTML = `<span>${eventName} - ${coordinatorNames.join(", ")}</span> 
+                            <span class="delete-btn" onclick="deleteFaculty(this)">❌</span>`;
+            facultyList.appendChild(li);
+
+            document.getElementById("facultyForm").reset();
+            document.getElementById("coordinatorFields").innerHTML = "";
+        });
+
+        function deleteFaculty(button) {
             button.parentElement.remove();
         }
     </script>
+
 </body>
+
 </html>

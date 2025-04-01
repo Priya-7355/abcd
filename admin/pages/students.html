@@ -1,30 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Manage Students</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management | Admin Panel</title>
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #1e1e2f;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        input, button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+        input {
+            flex: 1;
+            background: #2c2c3a;
+            color: white;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            border: 1px solid #555;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #333;
+        }
+        .action-btns button {
+            margin: 2px;
+            padding: 5px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        .approve { background-color: green; }
+        .reject { background-color: red; }
+        .edit { background-color: orange; }
+        .delete { background-color: darkred; }
+    </style>
 </head>
 <body>
-    <header><h1>Manage Students</h1></header>
-    <nav>
-        <ul>
-            <li><a href="../index.html">Dashboard</a></li>
-            <li><a href="events.html">Events</a></li>
-            <li><a href="faculty.html">Faculty</a></li>
-            <li><a href="sponsors.html">Sponsors</a></li>
-            <li><a href="feedback.html">Feedback</a></li>
-        </ul>
-    </nav>
-    <main>
-        <h2>Registered Students</h2>
-        <ul id="student-list">
-            <li>Priya Pal <button onclick="removeStudent(this)">Remove</button></li>
-            <li>John Doe <button onclick="removeStudent(this)">Remove</button></li>
-        </ul>
-    </main>
+    <div class="container">
+        <h1>Manage Students</h1>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Dashboard</a></li>
+                <li><a href="events.html">Events</a></li>
+                <li><a href="students.html">Students</a></li>
+                <li><a href="faculty.html">Faculty</a></li>
+                <li><a href="feedback.html">Feedback</a></li>
+            </ul>
+        </nav>
+        <div class="input-group">
+            <input type="text" id="studentName" placeholder="Student Name">
+            <input type="email" id="studentEmail" placeholder="Email">
+            <input type="text" id="studentCourse" placeholder="Course">
+            <button onclick="addStudent()">Add</button>
+        </div>
+        <input type="text" id="searchInput" placeholder="Search by Name" onkeyup="searchStudent()">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Course</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="studentTable"></tbody>
+        </table>
+    </div>
     <script>
-        function removeStudent(button) {
-            button.parentElement.remove();
+        let students = [];
+        function addStudent() {
+            const name = document.getElementById('studentName').value;
+            const email = document.getElementById('studentEmail').value;
+            const course = document.getElementById('studentCourse').value;
+            if (name && email && course) {
+                students.push({ name, email, course, status: 'Pending' });
+                document.getElementById('studentName').value = '';
+                document.getElementById('studentEmail').value = '';
+                document.getElementById('studentCourse').value = '';
+                displayStudents();
+            } else {
+                alert('Please fill all fields!');
+            }
+        }
+        function displayStudents() {
+            const table = document.getElementById('studentTable');
+            table.innerHTML = '';
+            students.forEach((student, index) => {
+                table.innerHTML += `
+                    <tr>
+                        <td>${student.name}</td>
+                        <td>${student.email}</td>
+                        <td>${student.course}</td>
+                        <td>${student.status}</td>
+                        <td class="action-btns">
+                            <button class="approve" onclick="approveStudent(${index})">Approve</button>
+                            <button class="reject" onclick="rejectStudent(${index})">Reject</button>
+                            <button class="edit" onclick="editStudent(${index})">Edit</button>
+                            <button class="delete" onclick="deleteStudent(${index})">Delete</button>
+                        </td>
+                    </tr>`;
+            });
+        }
+        function approveStudent(index) {
+            students[index].status = 'Approved';
+            displayStudents();
+        }
+        function rejectStudent(index) {
+            students[index].status = 'Rejected';
+            displayStudents();
+        }
+        function editStudent(index) {
+            const newName = prompt('Enter new name:', students[index].name);
+            const newEmail = prompt('Enter new email:', students[index].email);
+            const newCourse = prompt('Enter new course:', students[index].course);
+            if (newName && newEmail && newCourse) {
+                students[index].name = newName;
+                students[index].email = newEmail;
+                students[index].course = newCourse;
+                displayStudents();
+            }
+        }
+        function deleteStudent(index) {
+            if (confirm('Are you sure to delete this student?')) {
+                students.splice(index, 1);
+                displayStudents();
+            }
+        }
+        function searchStudent() {
+            const searchValue = document.getElementById('searchInput').value.toLowerCase();
+            const table = document.getElementById('studentTable');
+            table.innerHTML = '';
+            students.filter(student => student.name.toLowerCase().includes(searchValue)).forEach((student, index) => {
+                table.innerHTML += `
+                    <tr>
+                        <td>${student.name}</td>
+                        <td>${student.email}</td>
+                        <td>${student.course}</td>
+                        <td>${student.status}</td>
+                        <td class="action-btns">
+                            <button class="approve" onclick="approveStudent(${index})">Approve</button>
+                            <button class="reject" onclick="rejectStudent(${index})">Reject</button>
+                            <button class="edit" onclick="editStudent(${index})">Edit</button>
+                            <button class="delete" onclick="deleteStudent(${index})">Delete</button>
+                        </td>
+                    </tr>`;
+            });
         }
     </script>
 </body>

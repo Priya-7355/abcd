@@ -303,68 +303,11 @@ form .button input:hover {
     </div>
   </div>
 
-  <div class="container">
-    <h2>Upcoming Events</h2>
-    <ul id="event-list" class="event-list"></ul>
-  </div>
-
   <script>
     document.getElementById('eventForm').addEventListener('submit', function (event) {
       event.preventDefault();
-
-      let name = document.getElementById("eventName").value;
-      let category = document.getElementById("eventCategory").value;
-      let date = document.getElementById("eventDate").value;
-      let time = document.getElementById("eventTime").value;
-      let location = document.getElementById("eventLocation").value;
-      let description = document.getElementById("eventDescription").value;
-      let price = document.getElementById("eventPrice").value;
-      let capacity = document.getElementById("eventCapacity").value;
-      let upiId = document.getElementById("upiId").value;
-      let qrFile = document.getElementById("qrImage").files[0];
-      
-      if (!name || !category || !date || !time || !location || !description || !price || !capacity || !upiId || !qrFile) {
-        alert("Please fill all fields.");
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.readAsDataURL(qrFile);
-      reader.onload = function () {
-        const qrBase64 = reader.result;
-        
-        let eventDetails = {
-          name,
-          category,
-          date,
-          time,
-          location,
-          description,
-          price,
-          capacity,
-          upiId,
-          qrImage: qrBase64
-        };
-        
-        localStorage.setItem('event_' + name, JSON.stringify(eventDetails));
-        alert("Event Created Successfully!");
-        addEventToList(eventDetails);
-        document.getElementById("eventForm").reset();
-      };
+      window.location.href = 'faculty.html';
     });
-    
-    function addEventToList(eventDetails) {
-      let li = document.createElement("li");
-      li.innerHTML = `<strong>${eventDetails.name}</strong> - ${eventDetails.date} at ${eventDetails.time}, ${eventDetails.location} <br>
-                      ${eventDetails.description} | Price: ₹${eventDetails.price} | Capacity: ${eventDetails.capacity} <br>
-                      <button onclick="deleteEvent(this, '${eventDetails.name}')">Delete</button>`;
-      document.getElementById("event-list").appendChild(li);
-    }
-    
-    function deleteEvent(button, eventName) {
-      localStorage.removeItem('event_' + eventName);
-      button.parentElement.remove();
-    }
   </script>
 </body>
 </html>
