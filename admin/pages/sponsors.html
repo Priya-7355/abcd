@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Manage Sponsors</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header><h1>Manage Sponsors</h1></header>
+    <nav>
+        <ul>
+            <li><a href="../index.html">Dashboard</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="students.html">Students</a></li>
+            <li><a href="faculty.html">Faculty</a></li>
+            <li><a href="feedback.html">Feedback</a></li>
+        </ul>
+    </nav>
+    <main>
+        <h2>Event Sponsors</h2>
+        <ul id="sponsor-list">
+            <li>XYZ Ltd. - ₹50,000 <button onclick="removeSponsor(this)">Remove</button></li>
+            <li>ABC Corp. - ₹30,000 <button onclick="removeSponsor(this)">Remove</button></li>
+        </ul>
+    </main>
+    <script>
+        function removeSponsor(button) {
+            button.parentElement.remove();
+        }
+    </script>
+</body>
+</html>

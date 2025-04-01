@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Manage Students</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header><h1>Manage Students</h1></header>
+    <nav>
+        <ul>
+            <li><a href="../index.html">Dashboard</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="faculty.html">Faculty</a></li>
+            <li><a href="sponsors.html">Sponsors</a></li>
+            <li><a href="feedback.html">Feedback</a></li>
+        </ul>
+    </nav>
+    <main>
+        <h2>Registered Students</h2>
+        <ul id="student-list">
+            <li>Priya Pal <button onclick="removeStudent(this)">Remove</button></li>
+            <li>John Doe <button onclick="removeStudent(this)">Remove</button></li>
+        </ul>
+    </main>
+    <script>
+        function removeStudent(button) {
+            button.parentElement.remove();
+        }
+    </script>
+</body>
+</html>

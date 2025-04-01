@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Manage Faculty</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header><h1>Manage Faculty</h1></header>
+    <nav>
+        <ul>
+            <li><a href="../index.html">Dashboard</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="students.html">Students</a></li>
+            <li><a href="sponsors.html">Sponsors</a></li>
+            <li><a href="feedback.html">Feedback</a></li>
+        </ul>
+    </nav>
+    <main>
+        <h2>Faculty Coordinators</h2>
+        <ul id="faculty-list">
+            <li>Dr. Sharma - Tech Fest <button onclick="removeFaculty(this)">Remove</button></li>
+            <li>Prof. Verma - Hackathon <button onclick="removeFaculty(this)">Remove</button></li>
+        </ul>
+        <input type="text" id="newFaculty" placeholder="Enter Faculty Name">
+        <button onclick="addFaculty()">Assign Faculty</button>
+    </main>
+    <script>
+        function addFaculty() {
+            let facultyInput = document.getElementById("newFaculty").value;
+            if (facultyInput) {
+                let li = document.createElement("li");
+                li.innerHTML = facultyInput + ' <button onclick="removeFaculty(this)">Remove</button>';
+                document.getElementById("faculty-list").appendChild(li);
+                document.getElementById("newFaculty").value = "";
+            } else {
+                alert("Please enter faculty name.");
+            }
+        }
+        function removeFaculty(button) {
+            button.parentElement.remove();
+        }
+    </script>
+</body>
+</html>

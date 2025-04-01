@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Manage Feedback</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header><h1>Manage Feedback</h1></header>
+    <nav>
+        <ul>
+            <li><a href="../index.html">Dashboard</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="students.html">Students</a></li>
+            <li><a href="faculty.html">Faculty</a></li>
+            <li><a href="sponsors.html">Sponsors</a></li>
+        </ul>
+    </nav>
+    <main>
+        <h2>Student Feedback</h2>
+        <ul id="feedback-list">
+            <li>"Great event!" - Priya <button onclick="removeFeedback(this)">Remove</button></li>
+            <li>"Well-organized!" - John <button onclick="removeFeedback(this)">Remove</button></li>
+        </ul>
+    </main>
+    <script>
+        function removeFeedback(button) {
+            button.parentElement.remove();
+        }
+    </script>
+</body>
+</html>
